@@ -1,10 +1,10 @@
-import React from 'react'
-import Chat from './Chat'
-import Conversation from './Conversation'
+import Chat from "@/components/Home/Chat"
+import Conversation from "@/components/Home/Conversation"
+
 
 function HomePage() {
   return (
-    <div className='flex w-full'>
+    <div className='flex w-full  h-screen'>
         <Chat/>
 
         {/* Conversation */}

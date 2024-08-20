@@ -31,7 +31,7 @@ function SideNav() {
 }
 
   return (
-    <div className="w-[100px] p-2 bg-primary h-screen flex flex-col justify-between">
+    <div className="w-[100px] shrink-0 p-2 bg-primary h-full overflow-hidden flex flex-col justify-between">
       <div className="flex flex-col items-center gap-4">
         <div className="logo">
           <img className="object-cover" src="./src/assets/img/logo.png" />
