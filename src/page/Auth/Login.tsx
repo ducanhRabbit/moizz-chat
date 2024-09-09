@@ -1,11 +1,12 @@
 import LoginForm from "@/components/Auth/LoginForm";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
 import { FaXTwitter, FaFacebookF } from "react-icons/fa6";
 function Login() {
+  console.log("rerenderLo")
   return (
     <div className="flex justify-center items-center z-10 relative h-full ">
       <div className="p-3 min-w-[400px] bg-avo-yellow/70 backdrop-brightness-[1.2] backdrop-blur-[4px] rounded-2xl">
@@ -23,7 +24,7 @@ function Login() {
           <div className="flex text-sm gap-1">
             <div>New user?</div>
 
-            <Link className="underline text-link" to={"#"}>Create an account</Link>
+            <Link className="underline text-link" to={"/auth/register"}>Create an account</Link>
           </div>
         </div>
         <LoginForm/>

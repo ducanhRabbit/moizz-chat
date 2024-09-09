@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore"
-import firebase from "firebase/compat/app";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBmFkKEsDyWWUJX6hnqNxO20r_RbHQZ-bI",
   authDomain: "moizz-e02a6.firebaseapp.com",

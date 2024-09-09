@@ -2,6 +2,7 @@ import RegisterForm from '@/components/Auth/RegisterForm';
 import { Link } from 'react-router-dom';
 
 function Register() {
+  console.log("Regis render")
   return (
     <div className="flex justify-center items-center z-10 relative h-full ">
       <div className="p-3 min-w-[400px] bg-avo-yellow/70 backdrop-brightness-[1.2] backdrop-blur-[4px] rounded-2xl">
@@ -19,7 +20,7 @@ function Register() {
           <div className="flex text-sm gap-1">
             <div>Already have account?</div>
 
-            <Link className="underline text-link" to={"#"}>Log in</Link>
+            <Link className="underline text-link" to={"/auth/login"}>Log in</Link>
           </div>
         </div>
         <RegisterForm/>
