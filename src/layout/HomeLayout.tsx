@@ -3,7 +3,7 @@ import SideNav from "./SideNav"
 
 function HomeLayout() {
   return (
-    <div className='flex'>
+    <div className='flex h-screen overflow-hidden'>
         <SideNav/>
         <Outlet/>        
     </div>

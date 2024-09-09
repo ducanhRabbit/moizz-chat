@@ -23,6 +23,10 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+        grey: "hsl(var(--grey))",
+        link: "hsl(var(--link))",
+        "grey-100": "hsl(var(--grey-100))",
+        "avo-yellow": "hsl(var(--avo-yellow))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -81,12 +85,17 @@ module.exports = {
             scale:"2.4",
             opacity:"0"
           }
-        }
+        },
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "ripple":"ripple 1s  ease-out infinite"
+        "ripple":"ripple 1s  ease-out infinite",
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
     },
   },
