@@ -1,12 +1,16 @@
 import axiosInstance from "@/axios/axios"
 
-//POST Register User
-export const POST_REGISTER_USER = '/auth/register'
-
+// Auth
 export const postRegisterUser = async (formValues)=>{
     return await axiosInstance.post("/auth/register",{
         ...formValues
     })
+}
+
+export const postLogin = async ({data,option})=>{
+    return await axiosInstance.post("/auth/login",{
+        ...data
+    },option)
 }
 
 export const postResendOTP = async (email)=>{
@@ -20,5 +24,11 @@ export const postVerifyOTP = async (values)=>{
         ...values
     })
 }
-//POST Login
-export const POST_LOGIN = '/auth/login'
+
+// User
+export const getUserById = async (id)=>{
+    return await axiosInstance.get(`/user/${id}`).then(res => res.data)
+}
+export const getCurrentUser = async ()=>{
+    return await axiosInstance.get(`/user/currentUser`).then(res => res.data)
+}

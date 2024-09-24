@@ -3,7 +3,6 @@ import { useAppSelector } from "@/redux/hooks";"react-redux";
 
 function VerifyEmail() {
   const {verifying} = useAppSelector(state => state.auth)
-  console.log(verifying)
   return (
     <div className="flex justify-center items-center z-10 relative h-full ">
       <div className="p-3 min-w-[400px] bg-avo-yellow/70 backdrop-brightness-[1.2] backdrop-blur-[4px] rounded-2xl">

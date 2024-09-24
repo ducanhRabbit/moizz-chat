@@ -2,6 +2,7 @@ import { BsChatDots, BsTelephone } from "react-icons/bs";
 import { PiUsers } from "react-icons/pi";
 import { FiSettings } from "react-icons/fi";
 import { faker } from "@faker-js/faker";
+import { GoGear } from "react-icons/go";
 import React from "react";
 // import {
 //   ChatCircleDots,
@@ -33,21 +34,25 @@ const Nav_Buttons = [
   {
     index: 0,
     icon: BsChatDots,
+    name:'chat'
   },
   {
     index: 1,
     icon: PiUsers,
+    name:'group'
   },
   {
     index: 2,
     icon: BsTelephone,
+    name:'call'
   },
 ];
 
 const Nav_Setting = [
   {
     index: 3,
-    icon: <FiSettings/>,
+    icon: GoGear,
+    name:'setting'
   },
 ];
 

@@ -8,14 +8,12 @@ import UserTag from "@/components/Chat/UserTag";
 import { useQueryClient } from "@tanstack/react-query";
 import { QUERY_USER_KEY } from "@/constant/queries/query.constant";
 import { useGetCurrentUser } from "@/api/queries";
-function Chat() {
-  const {data:currentUser} = useGetCurrentUser()
-  console.log(currentUser)
+function Group() {
   return (
     <div className="w-[320px] bg-paper shrink-0 grow-0 h-full shadow-[0px_0px_2px_rgba(0,0,0,0.25)] z-10">
       <div className="flex flex-col gap-4 p-6 h-full overflow-hidden">
         <div className="flex justify-between items-center">
-          <h2 className="text-4xl font-bold tracking-wide">Chats</h2>
+          <h2 className="text-4xl font-bold tracking-wide">Group</h2>
           <Button
             variant={"outline"}
             className="w-[32px] h-[32px] p-2 rounded-full inline-flex items-center"
@@ -52,9 +50,6 @@ function Chat() {
           <h5 className="text-sm mb-2">Pinned</h5>
           <div className="flex flex-col gap-4">
             {/* Chat tag */}
-
-            <UserTag />
-            <UserTag />
           </div>
           </div>
           <div>
@@ -62,10 +57,6 @@ function Chat() {
             <div className="flex flex-col gap-4">
               {/* Chat tag */}
 
-              <UserTag />
-              <UserTag />
-              <UserTag />
-              <UserTag />
             </div>
           </div>
         </div>
@@ -74,4 +65,4 @@ function Chat() {
   );
 }
 
-export default Chat;
+export default Group;
