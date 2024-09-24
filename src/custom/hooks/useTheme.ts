@@ -1,0 +1,14 @@
+import { ThemeProviderContext } from "@/components/ThemeProvider";
+import { useContext } from "react";
+
+export const useTheme = () => {
+  // Duplicate
+
+
+  const context = useContext(ThemeProviderContext);
+
+  if (context === undefined)
+    throw new Error("useTheme must be used within a ThemeProvider");
+
+  return context;
+};

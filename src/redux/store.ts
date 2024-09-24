@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './slices/authReducer'
+import sideTabReducer from './slices/sideTabReducer'
 // ...
 
 const store = configureStore({
   reducer: {
-    auth:authReducer
+    auth:authReducer,
+    sideTab: sideTabReducer
   },
 })
 

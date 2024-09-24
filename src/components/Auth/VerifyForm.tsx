@@ -10,21 +10,30 @@ import {
 } from "../ui/form";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { Button } from "../ui/button";
+
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useLogin, useResendOTP, useVerifyOTP } from "@/api/queries";
+import { updateVerifyingEmail } from "@/redux/slices/authReducer";
+import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../common/LoadingSpinner";
 import useCountDown from "@/custom/hooks/useCountDown";
-import { useEffect } from "react";
-import { useAppSelector } from "@/redux/hooks";
-import { useResendOTP, useVerifyOTP } from "@/api/queries";
 
 function VerifyForm() {
-  const {verifying} = useAppSelector(state => state.auth)
-  const {resendOTPMutation} = useResendOTP()
-  const {verifyOTPMutation,verifyOTPAsyncMutation}= useVerifyOTP()
-  const handleResendOTP = ()=>{
-    if(verifying){
-      resendOTPMutation(verifying)
-      startCountDown(2)
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { verifying } = useAppSelector((state) => state.auth);
+  
+  const { resendOTPMutation } = useResendOTP();
+  const { verifyOTPAsyncMutation } = useVerifyOTP();
+  const [loading, setLoading] = useState(false);
+  const { loginAsyncMutation } = useLogin();
+  const handleResendOTP = () => {
+    if (verifying) {
+      resendOTPMutation(verifying);
+      startCountDown(2);
     }
-  }
+  };
 
   const verifySchema = Yup.object().shape({
     otp: Yup.string().min(6, "OTP must be 6 digits"),
@@ -33,25 +42,45 @@ function VerifyForm() {
   const method = useForm({
     resolver: yupResolver(verifySchema),
   });
-  const onSubmit = async (data:string) => {
+  const onSubmit = async (data: string) => {
     try {
+      setLoading(true);
       await verifyOTPAsyncMutation({
         email: verifying,
-        otp: data.otp
-      })
-      
+        otp: data.otp,
+      });
+      const res = await loginAsyncMutation({
+        data: {
+          email: verifying,
+        },
+        option: {
+          headers: {
+            verifieduser: true,
+          },
+        },
+      });
+      localStorage.setItem("accessToken", res.data.token);
+      setLoading(false);
+      localStorage.removeItem("verifying");
+      dispatch(updateVerifyingEmail(""));
+      navigate("/",{
+        replace:true
+      });
     } catch (err) {
-      setError("otp",{
-        message:"OTP is incorrect"
-      })
+      setError("otp", {
+        message: err.message,
+      });
+      setLoading(false);
     }
   };
-  const { control, handleSubmit,setError } = method;
+  const { control, handleSubmit, setError } = method;
   const { timeLeft, startCountDown } = useCountDown();
-
   useEffect(() => {
     startCountDown(2);
   }, [verifying]);
+
+  
+
   return (
     <>
       <Form {...method}>
@@ -101,11 +130,14 @@ function VerifyForm() {
         <div className="resend flex gap-1 justify-center text-xs mt-2 ">
           <div>Didn't receive email!</div>
           {timeLeft === 0 ? (
-            <div onClick={handleResendOTP} className="font-bold hover:underline cursor-pointer text-link">
+            <div
+              onClick={handleResendOTP}
+              className="font-bold hover:underline cursor-pointer text-link"
+            >
               Resend
             </div>
           ) : (
-            <div  className="cursor-pointer font-bold text-muted-foreground/50">
+            <div className="cursor-pointer font-bold text-muted-foreground/50">
               {timeLeft}
             </div>
           )}
@@ -113,10 +145,15 @@ function VerifyForm() {
         <div className="flex justify-center mt-6">
           <Button
             onClick={handleSubmit(onSubmit)}
-            className="w-full"
+            className="w-full flex justify-center disabled:bg-secondary disabled:opacity-70"
             type="submit"
+            disabled={loading}
           >
-            Verify
+            {loading ? (
+              <LoadingSpinner className="h-6 w-6 border-4 border-t-link " />
+            ) : (
+              "Verify"
+            )}
           </Button>
         </div>
       </Form>

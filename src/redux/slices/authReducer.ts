@@ -1,18 +1,16 @@
 import { POST_LOGIN, POST_REGISTER_USER } from "@/api/route";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { AppDispatch, RootState } from "../store";
-import { register } from "module";
 import axiosInstance from "@/axios/axios";
 
 interface TAuthInit {}
 
 const initialState = {
-  isLoggedIn: false,
   verifying: localStorage.getItem('verifying') || null,
   isLoading: false,
   user: null,
   user_id: null,
+  accessToken: localStorage.getItem('accessToken') || null
 };
 
 const authReducer = createSlice({
@@ -20,17 +18,17 @@ const authReducer = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.isLoggedIn = action.payload.isLoggedIn;
-      state.token = action.payload.token;
-      state.user_id = action.payload.user_id;
+      state.accessToken = action.payload.token,
+      state.user = action.payload.data
     },
     updateVerifyingEmail(state, action) {
-      state.email = action.payload.email;
+      state.verifying = action.payload;
     },
-    register: (state,action)=>{
-      state.user = action.payload.user
-      state
+    setUser: (state,action)=>{
+      state.user = action.payload
     }
+
+    
 
   }
 });
@@ -40,49 +38,49 @@ export const { login, updateVerifyingEmail } = authReducer.actions;
 export default authReducer.reducer;
 
 // Fetch API
-export function Login(formValue) {
-  return async (dispatch, getState) => {
-    try {
-      const res = await axiosInstance.post(
-        POST_LOGIN,
-        {
-          ...formValue,
-        },
-      );
+// export function Login(formValue) {
+//   return async (dispatch, getState) => {
+//     try {
+//       const res = await axiosInstance.post(
+//         POST_LOGIN,
+//         {
+//           ...formValue,
+//         },
+//       );
 
-      dispatch(
-        login({
-          isLoggedIn: true,
-          token: res.data.token,
-        })
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  };
-}
-export function RegisterUser(formValues) {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
-    try {
-      const res = await axiosInstance.post(
-        POST_REGISTER_USER,
-        {
-          ...formValues,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log(res)
-      dispatch(updateVerifyingEmail(formValues.email))
+//       dispatch(
+//         login({
+//           isLoggedIn: true,
+//           token: res.data.token,
+//         })
+//       );
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+// }
+// export function RegisterUser(formValues) {
+//   return async (dispatch: AppDispatch, getState: () => RootState) => {
+//     try {
+//       const res = await axiosInstance.post(
+//         POST_REGISTER_USER,
+//         {
+//           ...formValues,
+//         },
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
+//       console.log(res)
+//       dispatch(updateVerifyingEmail(formValues.email))
 
 
-    } catch (err) {
-      console.log(err)
-     throw err
-    }
-    // window.location.href = "/verify"
-  };
-}
+//     } catch (err) {
+//       console.log(err)
+//      throw err
+//     }
+//     // window.location.href = "/verify"
+//   };
+// }
