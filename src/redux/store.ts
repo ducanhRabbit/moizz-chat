@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './slices/authReducer'
 import sideTabReducer from './slices/sideTabReducer'
+import friendRequestReducer from './slices/friendRequestReducer'
 // ...
 
 const store = configureStore({
   reducer: {
     auth:authReducer,
-    sideTab: sideTabReducer
+    sideTab: sideTabReducer,
+    friendRequest: friendRequestReducer
   },
 })
 

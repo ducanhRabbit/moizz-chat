@@ -2,9 +2,10 @@ import { useAppSelector } from "@/redux/hooks";
 import { Navigate, useLocation } from "react-router-dom";
 
 function ProtectedVerifyRoute({ children }) {
-  const { verifying } = useAppSelector((state) => state.auth);
+  const { verifying, accessToken } = useAppSelector((state) => state.auth);
   const location = useLocation();
-  if (location.pathname.includes("verify-email") && !verifying) {
+console.log(accessToken)
+  if (!verifying && !accessToken) {
     return <Navigate to={"/auth/login"} replace={true} />;
   }
   return children;

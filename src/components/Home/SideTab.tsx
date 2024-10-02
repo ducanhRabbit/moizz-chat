@@ -7,7 +7,6 @@ function SideTab() {
   const {isOpen,content} = useAppSelector(state => state.sideTab)
   const renderContent = ()=>{
     if(content === 'chat'){
-      console.log("Chat")
       return <Chat/>
     }else if(content === 'group'){
       return <Group/>

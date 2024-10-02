@@ -3,6 +3,7 @@ import { PiUsers } from "react-icons/pi";
 import { FiSettings } from "react-icons/fi";
 import { faker } from "@faker-js/faker";
 import { GoGear } from "react-icons/go";
+
 import React from "react";
 // import {
 //   ChatCircleDots,
@@ -14,20 +15,7 @@ import React from "react";
 //   Users,
 // } from "phosphor-react";
 
-// const Profile_Menu = [
-//   {
-//     title: "Profile",
-//     icon: <User />
-//   },
-//   {
-//     title: "Settings",
-//     icon: <Gear />,
-//   },
-//   {
-//     title: "Profile",
-//     icon: <SignOut />,
-//   },
-// ];
+
 
 
 const Nav_Buttons = [

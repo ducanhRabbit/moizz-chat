@@ -14,7 +14,7 @@ import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useLogin, useResendOTP, useVerifyOTP } from "@/api/queries";
-import { updateVerifyingEmail } from "@/redux/slices/authReducer";
+import { login, updateVerifyingEmail } from "@/redux/slices/authReducer";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../common/LoadingSpinner";
 import useCountDown from "@/custom/hooks/useCountDown";
@@ -60,9 +60,11 @@ function VerifyForm() {
         },
       });
       localStorage.setItem("accessToken", res.data.token);
-      setLoading(false);
       localStorage.removeItem("verifying");
       dispatch(updateVerifyingEmail(""));
+      dispatch(login(res.data))
+      setLoading(false);
+      console.log('naviagte')
       navigate("/",{
         replace:true
       });
