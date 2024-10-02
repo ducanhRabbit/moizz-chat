@@ -1,7 +1,7 @@
 // Queries
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getCurrentUser, getUserById, postLogin, postRegisterUser, postResendOTP, postVerifyOTP } from "./route";
-import { QUERY_USER_KEY } from "@/constant/queries/query.constant";
+import { getCurrentUser, getFriendRequest, getUserById, getUserFriend, postLogin, postLogOut, postRegisterUser, postResendOTP, postVerifyOTP } from "./route";
+import { QUERY_FRIENDS_KEY, QUERY_FRIENDS_REQUEST_KEY, QUERY_USER_KEY } from "@/constant/queries/query.constant";
 
 export function useGetUserQuery(id){
     const user = useQuery({
@@ -12,11 +12,28 @@ export function useGetUserQuery(id){
     return user
 }
 
+export function useGetUserFriendsQuery(){
+    const friends = useQuery({
+        queryKey:[QUERY_FRIENDS_KEY],
+        queryFn:()=> getUserFriend()
+    })
+    return friends
+}
+
+export function useGetFriendsRequestQuery(){
+    const requests = useQuery({
+        queryKey:[QUERY_FRIENDS_REQUEST_KEY],
+        queryFn:()=> getFriendRequest()
+    })
+    return requests
+}
+
 export function useGetCurrentUser(){
-    return useQuery({
+    const currentUser = useQuery({
         queryKey:[QUERY_USER_KEY],
         queryFn:()=> getCurrentUser(),
     })
+    return currentUser
 }
 //Mutation
 export function useLogin(){
@@ -69,4 +86,17 @@ export function useVerifyOTP(){
         }
     })
     return {verifyOTPMutation,verifyOTPAsyncMutation}
+}
+
+export function useLogOut(){
+    const logOutMutation = useMutation({
+        mutationFn:()=>{
+            return postLogOut()
+        },
+        onError:(err)=>{
+            console.log(err)
+            throw err
+        }
+    })
+    return logOutMutation
 }

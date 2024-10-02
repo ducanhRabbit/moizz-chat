@@ -8,6 +8,7 @@ interface TAuthInit {}
 const initialState = {
   verifying: localStorage.getItem('verifying') || null,
   isLoading: false,
+  isLogged:!!localStorage.getItem('accessToken'),
   user: null,
   user_id: null,
   accessToken: localStorage.getItem('accessToken') || null
@@ -19,13 +20,19 @@ const authReducer = createSlice({
   reducers: {
     login: (state, action) => {
       state.accessToken = action.payload.token,
-      state.user = action.payload.data
+      state.user = action.payload.data,
+      state.isLogged = true
     },
     updateVerifyingEmail(state, action) {
       state.verifying = action.payload;
     },
     setUser: (state,action)=>{
       state.user = action.payload
+    },
+    logout:(state) =>{
+      state.accessToken = null,
+      state.isLogged = false
+      state.user = null
     }
 
     
@@ -33,7 +40,7 @@ const authReducer = createSlice({
   }
 });
 
-export const { login, updateVerifyingEmail } = authReducer.actions;
+export const { login, updateVerifyingEmail,setUser,logout } = authReducer.actions;
 
 export default authReducer.reducer;
 

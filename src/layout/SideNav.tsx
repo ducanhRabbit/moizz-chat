@@ -1,32 +1,83 @@
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { GoGear } from "react-icons/go";
+import { IconSwitch } from "@/components/ui/switch";
+import { FaSun, FaMoon } from "react-icons/fa";
 import { Nav_Buttons, Nav_Setting } from "@/data/data";
-import { useState } from "react";
+import { VscSignOut } from "react-icons/vsc";
+import { PiUsers } from "react-icons/pi";
+import { GoGear } from "react-icons/go";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { useNavigate } from "react-router-dom";
-import { useGetCurrentUser } from "@/api/queries";
+import { useGetCurrentUser, useLogOut } from "@/api/queries";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { switchTab, toggleOpen } from "@/redux/slices/sideTabReducer";
 import { useTheme } from "@/custom/hooks/useTheme";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { profile } from "console";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { logout } from "@/redux/slices/authReducer";
 
 function SideNav() {
-  const {data:currentUser} = useGetCurrentUser()
-  console.log(currentUser)
-  const {theme} = useTheme()
-  console.log(theme)
+  const { data: currentUser } = useGetCurrentUser();
+  const { theme, setTheme } = useTheme();
+  const {
+    mutateAsync: logOutAsyncMutation,
+    isPending,
+    isSuccess,
+  } = useLogOut();
+  const navigate = useNavigate();
+  const Profile_Menu = [
+    {
+      title: "Profile",
+      icon: <PiUsers />,
+      handler: () => {
+        console.log("Profile");
+      },
+    },
+    {
+      title: "Settings",
+      icon: <GoGear />,
+      handler: () => {
+        console.log("Settings");
+      },
+    },
+    {
+      title: "Log out",
+      icon: <VscSignOut />,
+      handler: async () => {
+        try {
+          console.log("Log out");
+          dispatch(logout())
+          await logOutAsyncMutation();
+          toast.success("Logout",{
+            autoClose:2000
+          });
+          localStorage.removeItem("accessToken");
+          setTimeout(() => {
+            navigate("/auth/login");
+          }, 2000);
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    },
+  ];
   const dispatch = useAppDispatch();
   const { isOpen, content } = useAppSelector((state) => state.sideTab);
   const handleNav = (btn) => {
     const isActive = content === btn.name;
-    if(!isOpen){
+    if (!isOpen) {
       sessionStorage.setItem("currentTab", btn.name);
-      dispatch(toggleOpen())
+      dispatch(toggleOpen());
       dispatch(switchTab(btn.name));
-    }else{
+    } else {
       if (isActive) {
         dispatch(toggleOpen());
-      }else{
+      } else {
         sessionStorage.setItem("currentTab", btn.name);
         dispatch(switchTab(btn.name));
       }
@@ -81,14 +132,51 @@ function SideNav() {
           })}
         </div>
       </div>
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-4">
         <div className="dark-mode">
-          <Switch />
+          <IconSwitch
+            className="text-track"
+            icon={theme === "dark" ? <FaMoon className="" /> : <FaSun />}
+            checked={theme === "dark" ? true : false}
+            onCheckedChange={(checked) => {
+              if (!checked) {
+                setTheme("light");
+              } else {
+                setTheme("dark");
+              }
+            }}
+          />
         </div>
         <div className="ava-menu">
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-          </Avatar>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="outline-none">
+              <Avatar className="w-12 h-12">
+                <AvatarImage src="https://github.com/shadcn.png" />
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              side="right"
+              sideOffset={4}
+              align="end"
+              alignOffset={16}
+            >
+              {Profile_Menu.map((item, index) => {
+                return (
+                  <DropdownMenuItem key={index}>
+                    <div
+                      onClick={() => {
+                        item.handler();
+                      }}
+                      className="flex justify-between w-full items-center [&_.icon]:text-[18px]"
+                    >
+                      <div>{item.title}</div>
+                      <div className="icon">{item.icon}</div>
+                    </div>
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>

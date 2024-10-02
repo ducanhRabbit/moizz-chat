@@ -54,7 +54,6 @@ function LoginForm() {
         dispatch(updateVerifyingEmail(currentUser.data.data.email));
         return navigate("/auth/verify-email");
       }
-      console.log("navigate")
       dispatch(login(res.data))
       navigate("/",{
         replace:true
